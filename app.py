@@ -5,6 +5,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import nfm_pages.maintenance_invoice as maintenance_invoice
 import nfm_pages.job_card as job_card
+import nfm_pages.vehicle_timesheets as vehicle_timesheets
 from nfm_pages import (
     dashboard,
     wc_groups,
@@ -25,7 +26,7 @@ from nfm_pages import (
     building_inspections, 
     maintenance_invoice,
      job_card,
-      
+      vehicle_timesheets,
     )
 # -----------------------------------------------
 # Patch: Replace deprecated use_container_width
@@ -62,23 +63,24 @@ PAGE_MAP = {
     "Dashboard": dashboard,
     "WC Groups": wc_groups,
     "Buildings": buildings,
-        "Building Inspections": building_inspections, 
+    "Building Inspections": building_inspections,
     "Fleet & Equipment": fleet,
     "Work Orders": work_orders,
     "Daily Reports": daily_reports,
     "Workers & Attendance": workers,
     "Attendance": attendance,
-      "Payroll": payroll,
-      "Invoices": invoices,
-      "Invoice PDF": invoice_pdf,
-         "FM Monthly Report": monthly_report,  
-    "Salary Slips": salary_slips,       
-       "Worker KPIs": kpi,
-        "SLA Dashboard": sla, 
-     "Supervisor Mobile": supervisor_mobile,
-     "Settings & Help": settings_page,
-     "Maintenance Invoice (Out of Scope)": maintenance_invoice,
-     "Job Card / Work Completion Certificate": job_card,
+    "Payroll": payroll,
+    "Invoices": invoices,
+    "Invoice PDF": invoice_pdf,
+    "FM Monthly Report": monthly_report,
+    "Salary Slips": salary_slips,
+    "Worker KPIs": kpi,
+    "SLA Dashboard": sla,
+    "Supervisor Mobile": supervisor_mobile,
+    "Settings & Help": settings_page,
+    "Maintenance Invoice (Out of Scope)": maintenance_invoice,
+    "Job Card / Work Completion Certificate": job_card,
+    "Vehicle Time Sheets": vehicle_timesheets,
 }
 
 
