@@ -3,7 +3,8 @@ from config import APP_TITLE
 from nfm_pages import invoice_pdf
 import warnings
 warnings.filterwarnings("ignore")
-
+import nfm_pages.maintenance_invoice as maintenance_invoice
+import nfm_pages.job_card as job_card
 from nfm_pages import (
     dashboard,
     wc_groups,
@@ -22,6 +23,8 @@ from nfm_pages import (
     monthly_report,        
     salary_slips,          
     building_inspections, 
+    maintenance_invoice,
+     job_card,
       
     )
 # -----------------------------------------------
@@ -73,7 +76,9 @@ PAGE_MAP = {
        "Worker KPIs": kpi,
         "SLA Dashboard": sla, 
      "Supervisor Mobile": supervisor_mobile,
-     "Settings & Help": settings_page, 
+     "Settings & Help": settings_page,
+     "Maintenance Invoice (Out of Scope)": maintenance_invoice,
+     "Job Card / Work Completion Certificate": job_card,
 }
 
 
