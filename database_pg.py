@@ -110,3 +110,29 @@ def record_invoice(
         """,
         (invoice_no, invoice_type, client_name, contract_ref, period, total_amount),
     )
+def get_next_workorder_number():
+    """
+    Returns next WO no in format: NPS-WO-XXX
+    """
+    try:
+        rows = fetch_all("SELECT wo_no FROM work_orders ORDER BY id DESC LIMIT 1")
+        if rows and "wo_no" in rows[0] and rows[0]["wo_no"]:
+            last = rows[0]["wo_no"]
+            number = int(last.split("-")[-1])
+            return f"NPS-WO-{number+1:03d}"
+        else:
+            return "NPS-WO-001"
+    except Exception as e:
+        print("❌ WO sequence error:", e)
+        return "NPS-WO-001"
+
+
+def create_work_order(wo_no, title, description, location):
+    """
+    Insert new work order.
+    """
+    sql = """
+        INSERT INTO work_orders (wo_no, title, description, location)
+        VALUES (%s, %s, %s, %s)
+    """
+    return execute(sql, (wo_no, title, description, location))

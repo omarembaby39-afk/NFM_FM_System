@@ -1,5 +1,5 @@
 import os
-from datetime import date, datetime
+from datetime import date
 
 import pandas as pd
 import streamlit as st
@@ -58,6 +58,10 @@ def ensure_tables():
 
 
 def generate_next_wo_number() -> str:
+    """
+    Generate next WO number in format: NPS-WO-XXX
+    Examples: NPS-WO-001, NPS-WO-002, ...
+    """
     rows = fetch_all(
         """
         SELECT wo_number
@@ -68,16 +72,18 @@ def generate_next_wo_number() -> str:
         """
     )
     if not rows:
-        return "WO-0001"
+        return "NPS-WO-001"
 
-    last = rows[0]["wo_number"] or "WO-0000"
+    last = rows[0].get("wo_number") or "NPS-WO-000"
     try:
-        prefix, num = last.split("-")
-        new_num = int(num) + 1
+        parts = last.split("-")
+        num_part = parts[-1]
+        prefix = "-".join(parts[:-1]) or "NPS-WO"
+        new_num = int(num_part) + 1
+        return f"{prefix}-{new_num:03d}"
     except Exception:
-        prefix = "WO"
-        new_num = 1
-    return f"{prefix}-{new_num:04d}"
+        # Fallback if old format is weird
+        return "NPS-WO-001"
 
 
 def load_buildings():
@@ -139,7 +145,7 @@ def export_wo_to_pdf(wo: dict, page_size_label: str) -> str:
     else:
         pagesize = A5
 
-    filename = f"{wo.get('wo_number','WO')}.pdf"
+    filename = f"{wo.get('wo_number','NPS-WO')}.pdf"
     pdf_path = os.path.join(WO_EXPORT_DIR, filename)
 
     c = canvas.Canvas(pdf_path, pagesize=pagesize)
@@ -155,7 +161,8 @@ def export_wo_to_pdf(wo: dict, page_size_label: str) -> str:
     y = height - 40 * mm
     c.setFont("Helvetica-Bold", 11)
     c.drawString(15 * mm, y, f"WO No.: {wo.get('wo_number','')}")
-    c.drawRightString(width - 15 * mm, y, f"Date: {wo.get('opened_at','')[:10]}")
+    opened_at = str(wo.get("opened_at", "") or "")
+    c.drawRightString(width - 15 * mm, y, f"Date: {opened_at[:10]}")
     y -= 8 * mm
 
     # Basic info
@@ -228,7 +235,7 @@ def split_text(text: str, width: int):
 
 
 def export_wo_to_excel(wo: dict) -> str:
-    filename = f"{wo.get('wo_number','WO')}.xlsx"
+    filename = f"{wo.get('wo_number','NPS-WO')}.xlsx"
     xlsx_path = os.path.join(WO_EXPORT_DIR, filename)
 
     df = pd.DataFrame([wo])
@@ -275,7 +282,7 @@ def render():
         )
 
     with col_side:
-        # Location type: WC / Building / Yard
+        # Location type: WC / Building / Yard & Public
         location_type = st.selectbox(
             "Location Type",
             ["WC", "Building", "Yard & Public"],
