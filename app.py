@@ -39,9 +39,11 @@ import nfm_pages.vehicle_timesheets as vehicle_timesheets
 # -------------------------------------------------
 st.set_page_config(
     page_title=APP_TITLE,
+    page_icon="🏢",      # Facility Management icon
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
 
 # -------------------------------------------------
 # Patch deprecated use_container_width
