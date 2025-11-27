@@ -66,31 +66,41 @@ def create_invoice_pdf(output_path, title="Invoice", lines=None):
 
 
 # -------------------------------------------------------
-# 4) Streamlit wrapper (if needed)
+# 4) Streamlit UI helper
 # -------------------------------------------------------
 def generate_pdf_ui():
     """
     Optional: Streamlit UI button to generate a sample PDF.
-    Call this inside app.py if you want a page button.
+    This will be called by render().
     """
 
-    st.subheader("Generate Sample Invoice PDF")
+    st.subheader("Generate Invoice PDF")
 
     if not REPORTLAB_AVAILABLE:
         st.error("ReportLab is not installed. PDF export is disabled.")
         return
+
+    title = st.text_input("Invoice title", "NFM Invoice Example")
+
+    default_lines = [
+        "Line 1: Example service",
+        "Line 2: Example amount",
+        "Line 3: Thank you for using NPS."
+    ]
+    lines_text = st.text_area(
+        "Invoice lines (one per row)",
+        "\n".join(default_lines),
+        height=150,
+    )
+    lines = [l for l in lines_text.split("\n") if l.strip()]
 
     if st.button("Generate PDF"):
         output_file = "invoice_output.pdf"
 
         ok = create_invoice_pdf(
             output_file,
-            title="NFM Invoice Example",
-            lines=[
-                "Line 1: Example service",
-                "Line 2: Example amount",
-                "Line 3: Thank you for using NPS."
-            ]
+            title=title,
+            lines=lines,
         )
 
         if ok:
@@ -101,3 +111,17 @@ def generate_pdf_ui():
                     file_name=output_file,
                     mime="application/pdf"
                 )
+
+
+# -------------------------------------------------------
+# 5) Standard page entry point for PAGE_MAP
+# -------------------------------------------------------
+def render():
+    """Entry point for the Invoice PDF page (used by PAGE_MAP)."""
+    st.title("Invoice PDF Generator")
+
+    if not REPORTLAB_AVAILABLE:
+        st.error("ReportLab is not installed. PDF export is disabled.")
+        return
+
+    generate_pdf_ui()
