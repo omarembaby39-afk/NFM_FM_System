@@ -1,6 +1,9 @@
 import os
 import streamlit as st
-from reportlab.pdfgen import canvas
+ from reportlab.pdfgen import canvas
+    REPORTLAB_AVAILABLE = True
+except ImportError:
+    REPORTLAB_AVAILABLE = False
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib import colors
