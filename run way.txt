@@ -1,0 +1,3 @@
+cd C:\Users\acer\OneDrive\Nileps\NFM_FM_System
+venv\Scripts\activate
+streamlit run app.py

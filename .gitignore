@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Streamlit local config
+.streamlit/secrets.toml
+.streamlit/
+
+# Databases / local data
+*.db
+
+# OneDrive junk
+*.lnk
+desktop.ini
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# IDE folders
+.vscode/
+.idea/
